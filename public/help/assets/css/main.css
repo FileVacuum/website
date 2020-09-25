@@ -77,13 +77,21 @@ img {
     display: block;
 }
 
-.fixed-top {
+.fixed-top-right {
 	color: #555;
-	position: absolute;
+	position: fixed;
     top: 5px;
     right: 23px;
     text-align: right;
     z-index: 2;
+}
+.fixed-top-left {
+	color: #555;
+	position: fixed;
+    top: 5px;
+    left: 23px;
+    text-align: right;
+    z-index: 20000;
 }
 
 /* Basic */
