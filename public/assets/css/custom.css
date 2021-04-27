@@ -1,0 +1,63 @@
+.storage-animation {
+    padding: 0;
+    width: 100%;
+    background: #fff;
+    text-align: center;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
+
+.how-it-works {
+    width: 100%;
+    text-align: center;
+    background: #fff;
+    padding: 99px 0 13px 0;
+}
+
+.header-logo-link:hover {
+    text-decoration: none;
+}
+
+.footer-mdm {
+    color: #007bff !important; display: inline-block !important;
+}
+
+#animation_container {
+    background-color: rgba(255, 255, 255, 1.00);
+    width: 960px;
+    height: 420px;
+    text-align: center;
+    margin: auto;
+}
+
+.widget.links.support {
+    margin: 0 52px;
+}
+
+@media screen and (max-width: 736px) {
+    #logo-mac {
+        clear: both;
+        display: block;
+    }
+
+    .storage-animation {
+        position: absolute;
+        left: 0;
+    }
+
+    .expand-100-mobile {
+        display: block;
+        clear: both;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    .expand-50-mobile {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+
+    .widget.links.support {
+        margin: inherit;
+    }
+}

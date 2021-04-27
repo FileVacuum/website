@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>FileVacuum by MDM</title>
+		<title>FileVacuum for macOS</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="apple-touch-icon" sizes="57x57" href="/images/filevacuum-icon/">
@@ -22,6 +22,7 @@
 		<meta name="msapplication-TileImage" content="/images/filevacuum-icon/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/custom.css" />
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 		        
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -57,19 +58,68 @@
 				if(m[y])m[y]=function(){return g._w[y].apply(this,arguments)};
 				g._v="1.3.0";
 			})(window,document,window['_fs_namespace'],'script','user');
+		</script>
+
+		<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+		<script src="assets/js/storage-animation.js"></script>
+		<script>
+			var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+			function init() {
+				canvas = document.getElementById("canvas");
+				anim_container = document.getElementById("animation_container");
+				dom_overlay_container = document.getElementById("dom_overlay_container");
+				var comp=AdobeAn.getComposition("71202E9B2458405AA130FCCE3D4323E3");
+				var lib=comp.getLibrary();
+				var loader = new createjs.LoadQueue(false);
+				loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+				loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+				var lib=comp.getLibrary();
+				loader.loadManifest(lib.properties.manifest);
+			}
+			function handleFileLoad(evt, comp) {
+				var images=comp.getImages();	
+				if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
+			}
+			function handleComplete(evt,comp) {
+				//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+				var lib=comp.getLibrary();
+				var ss=comp.getSpriteSheet();
+				var queue = evt.target;
+				var ssMetadata = lib.ssMetadata;
+				for(i=0; i<ssMetadata.length; i++) {
+					ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+				}
+				exportRoot = new lib.storageanimation();
+				stage = new lib.Stage(canvas);	
+				//Registers the "tick" event listener.
+				fnStartAnimation = function() {
+					stage.addChild(exportRoot);
+					createjs.Ticker.framerate = lib.properties.fps;
+					createjs.Ticker.addEventListener("tick", stage);
+				}	    
+				//Code to support hidpi screens and responsive scaling.
+				AdobeAn.makeResponsive(true,'width',false,1,[canvas,anim_container,dom_overlay_container]);	
+				AdobeAn.compositionLoaded(lib.properties.id);
+				fnStartAnimation();
+			}
 			</script>
 
 	</head>
-	<body class="is-preload homepage">
+	<body class="is-preload homepage" onload="init();">
 		<div id="page-wrapper">
 			<!-- Header -->
 				<div id="header-wrapper">
 					<header id="header" class="container">
 						<!-- Logo -->
+						<a class ="header-logo-link" href="index.html">
 							<div id="logo">
-								<h1><a href="index.html">FileVacuum</a></h1>
-								<span>for MacOS</span>
+								<h1>
+									FileVacuum
+								</h1>
+								<span> Keep your things clean </span>
 							</div>
+						</a>
+						<span id="logo-mac">for macOS</span>
 
 						<!-- Nav -->
 							<nav id="nav">
@@ -105,31 +155,47 @@
 				<!-- Features -->
 				<div id="features-wrapper">
 					<div class="container">
-						<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
 							<strong>You found it!</strong> This website is just a preview, we're not 100% live yet. But the email address is good: 📬 contact@filevacuum.com
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							  <span aria-hidden="true">&times;</span>
 							</button>
-						</div><br/><br/>
+						</div><br/><br/> -->
 						<div class="row">
-							<div class="col-4 col-12-medium">
 
+							<div class="storage-animation">
+								<!-- <img src="images/storage-animation.gif" /> -->
+								<div id="animation_container">
+									<canvas id="canvas" width="960" height="420" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+									<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:960px; height:420px; position: absolute; left: 0px; top: 0px; display: block;">
+									</div>
+								</div>
+							</div>
+
+							<div class="how-it-works">
+								<h1> How It Works </h1>
+								<hr/>
+							</div>
+							
+							<div class="col-4 col-12-medium">
+								
 								<!-- Box -->
-									<section class="box feature">
-										<!-- <a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a> -->
-										<div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel" data-pause="false">
-											<div class="carousel-inner">
-											  <div class="carousel-item active">
-												<img src="images/phone-plug2-01.svg" class="d-block w-100" alt="images/pic01.jpg">
-											  </div>
-											  <div class="carousel-item">
-												<img src="images/phone2-plug2-01.svg" class="d-block w-100" alt="images/pic02.jpg">
-											  </div>
-											  <div class="carousel-item">
-												<img src="images/phone3-plug2-01.svg" class="d-block w-100" alt="images/pic02.jpg">
-											  </div>
-											</div>
+								<section class="box feature">
+									<!-- <a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a> -->
+									<div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel" data-pause="false">
+										<div class="carousel-inner">
+										  <div class="carousel-item active">
+											<img src="images/phone-plug2-01.svg" class="d-block w-100" alt="images/pic01.jpg">
+										  </div>
+										  <div class="carousel-item">
+											<img src="images/phone2-plug2-01.svg" class="d-block w-100" alt="images/pic02.jpg">
+										  </div>
+										  <div class="carousel-item">
+											<img src="images/phone3-plug2-01.svg" class="d-block w-100" alt="images/pic02.jpg">
+										  </div>
 										</div>
+									</div>
+									
 										<div class="inner">
 											<header>
 												<h2>Automatically vacuum files from:</h2>
@@ -213,14 +279,14 @@
 				<div id="banner-wrapper">
 					<div id="banner" class="box container">
 						<div class="row">
-							<div class="col-7 col-12-medium">
+							<div class="col-7 col-12-medium expand-100-mobile">
 								<h2>For those who offload, often.</h2>
 								<p>Daily usage on average saves:</p>
 								<span> 3 minutes a day * 365 = 18.6 hours/year 🏖</span>
 							</div>
-							<div class="col-5 col-12-medium">
+							<div class="col-5 col-12-medium expand-100-mobile">
 								<ul>
-									<li><a href="#" class="button large icon solid fa-arrow-circle-right">Ok let's go</a></li>
+									<li><a href="#" class="button large icon solid fa-arrow-circle-right">Get Me Clean</a></li>
 									<li><a href="/help/" class="button alt large icon solid fa-question-circle">More info</a></li>
 								</ul>
 							</div>
@@ -273,7 +339,7 @@
 				<div id="footer-wrapper">
 					<footer id="footer" class="container">
 						<div class="row">
-							<div class="col-3 col-6-medium col-12-small">
+							<div class="col-3 col-6-medium col-12-small expand-50-mobile">
 
 								<!-- Links -->
                                 <section class="widget links">
@@ -287,26 +353,33 @@
                                     </ul>
                                 </section>
                             </div>
-                            <div class="col-3 col-6-medium col-12-small">
+                            <div class="col-3 col-6-medium col-12-small expand-50-mobile">
 
                                 <!-- Links -->
                                 <section class="widget links">
                                     <h3>📱 Devices and Files</h3>
                                     <ul class="style2">
-                                        <li><strong>Vacuum up the following:</strong></li>
-                                        <li>Phones, cameras, audio recorders.</li>
+                                        <!-- <li><strong>Vacuum up the following:</strong></li>
+                                        <li>Phones, cameras, audio recorders.</li> -->
                                         <!-- <li>Anything with a folder you can specify.</li> -->
-                                        <br/>
-                                        <li>Supported Files Types:</li>
-                                        <li><strong>MP3</strong>, MP4, JPG, RAW, ZIP.</li>
+                                        <!-- <br/> -->
+                                        <li>Supported Devices:</li>
+									</li>
+									<li>- <strong>Android Phones</strong></li>
+									<li>- <strong>Cameras</strong> / <strong>audio recorders</strong></li>
+									<li>-<strong> iPhone</strong>* 
+										<span style="font-size: 10px;">
+											zip/copy files only, <br/> 
+											deleting/trashing not available for iPhones yet
+										</span>
                                     </ul>
                                 </section>
 
 							</div>
-							<div class="col-3 col-6-medium col-12-small">
+							<div class="col-3 col-6-medium col-12-small expand-50-mobile">
 
 								<!-- Links -->
-								<section class="widget links">
+								<section class="widget links support">
 									<h3>⛑ Support</h3>
 									<ul class="style2">
 										<li><a href="/help">📖 Help Pages</a></li>
@@ -320,12 +393,12 @@
 								</section>
 
 							</div>
-							<div class="col-3 col-6-medium col-12-small">
+							<div class="col-3 col-6-medium col-12-small expand-50-mobile">
 
 								<!-- Contact -->
 									<section class="widget contact last">
 										<h3>📬 Contact Us</h3>
-										<p>✉️ <a href="mailto:contact@filevacuum.com">contact@filevacuum.com</a> </p>
+										<p><a href="mailto:contact@filevacuum.com">✉️ contact@filevacuum.com</a> </p>
 										<!-- <p>1234 Fictional Road<br />
 										Nashville, TN 00000<br />
 										(800) 555-0000</p> -->
@@ -348,7 +421,7 @@
 							<div class="col-12">
 								<div id="copyright">
 									<ul class="menu">
-										<li>&copy;2020 FileVacuum LLC. All rights reserved.</li><li>Made by <a style="color: #007bff;" href="https://mdm.cc">🔵 MDM</a>.</li>
+										<li>&copy;2021 FileVacuum LLC. All rights reserved.</li><li>Made by <a class="footer-mdm" href="https://mdm.cc">🔵 MDM</a>.</li>
 									</ul>
 								</div>
 							</div>

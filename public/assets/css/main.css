@@ -1944,22 +1944,25 @@ input, select, textarea {
 
 	#logo {
 		display: inline-block;
+		background: #ff4486;
+		color: #fff;
+		border-radius: 6px;
+		font-family: 'Oleo Script', serif;
+		padding: 1.25em 1.2em 0.2em 1.2em;
+		letter-spacing: 0.05em;
+		display: inline-block;
+		vertical-align: middle;
+		text-align: center;
+	}
+	
+	#logo h1 {
+		color: #fff;
+		font-size: 3.25em;
+		font-weight: 400;
+		line-height: 0.5;
 	}
 
-		#logo h1 {
-			background: #ff4486;
-			color: #fff;
-			border-radius: 6px;
-			font-family: 'Oleo Script', serif;
-			font-weight: 400;
-			padding: 0.25em 0.2em 0.25em 0.2em;
-			font-size: 3.25em;
-			letter-spacing: 0.05em;
-			display: inline-block;
-			vertical-align: middle;
-		}
-
-		#logo span {
+		#logo-mac {
 			font-weight: 800;
 			line-height: 4.5em;
 			letter-spacing: 0.025em;
@@ -2111,7 +2114,7 @@ input, select, textarea {
 			#banner .button.icon:before {
 				position: absolute;
 				right: 0.15em;
-				top: 50%;
+				top: 44%;
 				margin-top: -0.5em;
 			}
 
@@ -2137,6 +2140,7 @@ input, select, textarea {
 
 		#footer a {
 			color: inherit;
+			display: block;
 		}
 
 	#copyright {
@@ -2646,14 +2650,14 @@ input, select, textarea {
 
 		/* Logo */
 
-			#logo h1 {
+			/* #logo h1 {
 				font-size: 2.75em;
 				padding: 0.2em 0.275em;
 			}
 
 			#logo span {
 				line-height: 3em;
-			}
+			} */
 
 		/* Banner */
 
